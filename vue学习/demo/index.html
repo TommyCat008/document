@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <h2>姓名：{{person.name}}</h2>
+        <h3>性别：{{person.sex}}</h3>
+        <ul>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+        </ul>
+        <div v-text="msg"></div>
+        <div v-text="person.sex"></div>
+        <div v-html="htmlstr"></div>
+        <input v-model="person.name" />
+        <div>{{msg}}</div>
+        <button v-on:click="handleClick">点我出奇迹</button>
+
+        <!-- <image v-bind:src="image"></image> -->
+    </div>
+    <script src="./Observer.js"></script>
+    <script src="./Compile.js"></script>
+    <script src="./Mvue.js"></script>
+    <script>
+        const vm = new Mvue({
+            el: '#app',
+            data: {
+                image: '12312',
+                person: {
+                    name: '张哈哈',
+                    age: 20,
+                    sex: '男'
+                },
+                msg: '你好吗？',
+                htmlstr: '<h3>我是一个大坏蛋呀</h3>'
+            },
+            methods: {
+                handleClick() {
+                    console.log('clicked')
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
