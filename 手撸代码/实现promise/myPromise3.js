@@ -1,8 +1,8 @@
 /*
- * @Author: 汤米猫 
- * @Date: 2020-06-08 11:28:33 
+ * @Author: 汤米猫
+ * @Date: 2020-06-08 11:28:33
  * @Last Modified by: zhangyaqi
- * @Last Modified time: 2022-01-21 11:44:10
+ * @Last Modified time: 2024-04-24 10:29:19
  */
 
 // 继续完善，支持链式调用
@@ -20,33 +20,33 @@ function MyPromise(executor) {
     this.onResolvedCallbacks = [];
     this.onRejectedCallbacks = [];
 
-    const resolve = value => {
+    const resolve = (value) => {
         if (this.status === 'pending') {
             this.status = 'fulfilled';
             this.value = value;
-            this.onResolvedCallbacks.forEach(fn => {
+            this.onResolvedCallbacks.forEach((fn) => {
                 fn();
-            })
+            });
         }
-    }
+    };
 
-    const reject = error => {
+    const reject = (error) => {
         if (this.status === 'pending') {
             this.status = 'rejected';
             this.failReason = error;
-            this.onRejectedCallbacks.forEach(fn => {
+            this.onRejectedCallbacks.forEach((fn) => {
                 fn();
-            })
+            });
         }
-    }
+    };
 
     // 立即执行函数
-    executor(resolve, reject)
+    executor(resolve, reject);
 }
 
-MyPromise.prototype.then = function(onFulfilled, onRejected) {
+MyPromise.prototype.then = function (onFulfilled, onRejected) {
     let self = this;
-    let promise2 = new MyPromise(function(resolve, reject) {
+    let promise2 = new MyPromise(function (resolve, reject) {
         // 如果非异步
         if (self.status === 'fulfilled') {
             try {
@@ -73,7 +73,7 @@ MyPromise.prototype.then = function(onFulfilled, onRejected) {
                 } catch (error) {
                     reject(error);
                 }
-            })
+            });
             self.onRejectedCallbacks.push(() => {
                 try {
                     let x = onRejected(self.failReason);
@@ -81,11 +81,11 @@ MyPromise.prototype.then = function(onFulfilled, onRejected) {
                 } catch (error) {
                     reject(error);
                 }
-            })
+            });
         }
-    })
+    });
     return promise2;
-}
+};
 
 function resolvePromise(promise2, x, resolve, reject) {
     // 为了防止循环引用，因为resolvePromise被递归了，考虑一下。
@@ -95,11 +95,14 @@ function resolvePromise(promise2, x, resolve, reject) {
 
     // 如果x是promise
     if (x instanceof Promise) {
-        x.then(data => {
-            resolve(data)
-        }, e => {
-            reject(e)
-        })
+        x.then(
+            (data) => {
+                resolve(data);
+            },
+            (e) => {
+                reject(e);
+            }
+        );
         return;
     }
 
@@ -109,26 +112,30 @@ function resolvePromise(promise2, x, resolve, reject) {
         try {
             // 先拿到 x.then
             var then = x.then;
-            var called
+            var called;
             if (typeof then === 'function') {
                 // 这里的写法，是 then.call(this, fn1, fn2)
-                then.call(x, (y) => {
-                    // called 是干什么用的呢？
-                    // 有一些 promise 实现的不是很规范，瞎搞的，比如说，fn1, fn2 本应执行一个，
-                    // 但是有些then实现里面，fn1, fn2都会执行
-                    // 为了 fn1 和 fn2 只能调用一个, 设置一个 called 标志位
-                    if (called) {
-                        return;
+                then.call(
+                    x,
+                    (y) => {
+                        // called 是干什么用的呢？
+                        // 有一些 promise 实现的不是很规范，瞎搞的，比如说，fn1, fn2 本应执行一个，
+                        // 但是有些then实现里面，fn1, fn2都会执行
+                        // 为了 fn1 和 fn2 只能调用一个, 设置一个 called 标志位
+                        if (called) {
+                            return;
+                        }
+                        called = true;
+                        return resolvePromise(promise2, y, resolve, reject);
+                    },
+                    (r) => {
+                        if (called) {
+                            return;
+                        }
+                        called = true;
+                        return reject(r);
                     }
-                    called = true;
-                    return resolvePromise(promise2, y, resolve, reject);
-                }, (r) => {
-                    if (called) {
-                        return;
-                    }
-                    called = true;
-                    return reject(r);
-                });
+                );
             } else {
                 resolve(x);
             }
@@ -139,23 +146,25 @@ function resolvePromise(promise2, x, resolve, reject) {
             return reject(e);
         }
     } else {
-        resolve(x)
+        resolve(x);
     }
 }
 
 const myPromise = new MyPromise((resolve, reject) => {
     setTimeout(() => {
         // console.log(1)
-        resolve(1)
-    }, 1000)
-}).then(data => {
-    new MyPromise((resolve, reject) => {
-        setTimeout(() => {
-            // console.log(2)
-            resolve('end')
-        }, 1000)
-    })
-    return data
-}).then(data => {
-    console.log('data2', data)
+        resolve(1);
+    }, 1000);
 })
+    .then((data) => {
+        new MyPromise((resolve, reject) => {
+            setTimeout(() => {
+                // console.log(2)
+                resolve('end');
+            }, 1000);
+        });
+        return data;
+    })
+    .then((data) => {
+        console.log('data2', data);
+    });
