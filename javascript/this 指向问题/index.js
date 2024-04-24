@@ -72,3 +72,4 @@ sayHello.call(); //还是A
 
 // 最后看这篇文章就够用了
 // https://www.cnblogs.com/suihung/p/16244584.html
+// https://zhuanlan.zhihu.com/p/42145138
