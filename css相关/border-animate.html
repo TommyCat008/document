@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>border 动画效果</title>
+
+        <style>
+            .border-radius {
+                position: relative;
+                border: 1px solid #03a9f3;
+                width: 200px;
+                height: 60px;
+            }
+            .border-radius::before,
+            .border-radius::after {
+                content: '';
+                position: absolute;
+                width: 10px;
+                height: 10px;
+                transition: 0.3s ease-in-out;
+                box-sizing: border-box;
+            }
+            .border-radius::before {
+                top: -5px;
+                left: -5px;
+                border-top: 1px solid #03a9f3;
+                border-left: 1px solid #03a9f3;
+            }
+            .border-radius::after {
+                right: -5px;
+                bottom: -5px;
+                border-bottom: 1px solid #03a9f3;
+                border-right: 1px solid #03a9f3;
+            }
+            .border-radius:hover::before,
+            .border-radius:hover::after {
+                width: calc(100% + 9px);
+                height: calc(100% + 9px);
+            }
+        </style>
+
+        <style>
+            .border-dashed {
+                position: relative;
+                width: 200px;
+                height: 60px;
+            }
+            .border-dashed {
+                outline: 1px solid #333;
+                outline-offset: -1px;
+                transition: all 0.3s linear;
+                cursor: pointer;
+            }
+            .border-dashed:hover {
+                outline: 1px solid transparent;
+                background: linear-gradient(90deg, #333 50%, transparent 0) repeat-x,
+                    linear-gradient(90deg, #333 50%, transparent 0) repeat-x,
+                    linear-gradient(0deg, #333 50%, transparent 0) repeat-y,
+                    linear-gradient(0deg, #333 50%, transparent 0) repeat-y;
+                background-size: 4px 1px, 4px 1px, 1px 4px, 1px 4px;
+                background-position: 0 0, 0 100%, 0 0, 100% 0;
+                animation: linearGradientMove 0.3s infinite linear;
+            }
+
+            @keyframes linearGradientMove {
+                100% {
+                    background-position: 4px 0, -4px 100%, 0 -4px, 100% 4px;
+                }
+            }
+        </style>
+
+        <style>
+            @keyframes rotate {
+                100% {
+                    transform: rotate(1turn);
+                }
+            }
+
+            .border-rainbow {
+                position: relative;
+                z-index: 0;
+                width: 200px;
+                height: 200px;
+                border-radius: 10px;
+                overflow: hidden;
+            }
+
+            .border-rainbow::before {
+                content: '';
+                position: absolute;
+                z-index: -2;
+                left: -50%;
+                top: -50%;
+                width: 200%;
+                height: 200%;
+                background-color: #399953;
+                background-repeat: no-repeat;
+                background-size: 50% 50%, 50% 50%;
+                background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+                background-image: linear-gradient(#399953, #399953), linear-gradient(#fbb300, #fbb300),
+                    linear-gradient(#d53e33, #d53e33), linear-gradient(#377af5, #377af5);
+                animation: rotate 4s linear infinite;
+            }
+
+            .border-rainbow::after {
+                content: '';
+                position: absolute;
+                z-index: -1;
+                left: 6px;
+                top: 6px;
+                width: calc(100% - 12px);
+                height: calc(100% - 12px);
+                background: white;
+                border-radius: 5px;
+                animation: opacityChange 3s infinite alternate;
+            }
+
+            @keyframes opacityChange {
+                50% {
+                    opacity: 1;
+                }
+                100% {
+                    opacity: 0.5;
+                }
+            }
+        </style>
+
+        <style>
+            @keyframes rotate {
+                100% {
+                    transform: rotate(1turn);
+                }
+            }
+
+            .border-conic {
+                position: relative;
+                z-index: 0;
+                width: 200px;
+                height: 100px;
+                margin: 20px;
+                border-radius: 10px;
+                overflow: hidden;
+                padding: 2rem;
+            }
+            .border-conic::before {
+                content: '';
+                position: absolute;
+                z-index: -2;
+                left: -50%;
+                top: -50%;
+                width: 200%;
+                height: 200%;
+                background-color: #fff;
+                background-repeat: no-repeat;
+                background-position: 0 0;
+                background-image: conic-gradient(transparent, #ffa8a8, transparent 30%);
+                animation: rotate 4s linear infinite;
+            }
+            .border-conic::after {
+                content: '';
+                position: absolute;
+                z-index: -1;
+                left: 6px;
+                top: 6px;
+                width: calc(100% - 12px);
+                height: calc(100% - 12px);
+                background: #fff;
+                border-radius: 5px;
+            }
+
+            @keyframes opacityChange {
+                50% {
+                    opacity: 0.5;
+                }
+                100% {
+                    opacity: 1;
+                }
+            }
+        </style>
+
+        <style>
+            .border-flow {
+                position: relative;
+                margin: 0 20px;
+                width: 120px;
+                height: 64px;
+                text-align: center;
+                color: #fff;
+                font-size: 20px;
+                border: 2px solid gold;
+                border-radius: 10px;
+                background: gold;
+                cursor: pointer;
+            }
+            .border-flow::before,
+            .border-flow::after {
+                content: '';
+                position: absolute;
+                top: -10px;
+                left: -10px;
+                right: -10px;
+                bottom: -10px;
+                border: 2px solid gold;
+                transition: all 0.5s;
+                animation: clippath 3s infinite linear;
+                border-radius: 10px;
+            }
+            .border-flow::after {
+                animation: clippath 3s infinite -1.5s linear;
+            }
+
+            @keyframes clippath {
+                0%,
+                100% {
+                    -webkit-clip-path: inset(0 0 98% 0);
+                    clip-path: inset(0 0 98% 0);
+                }
+                25% {
+                    -webkit-clip-path: inset(0 98% 0 0);
+                    clip-path: inset(0 98% 0 0);
+                }
+                50% {
+                    -webkit-clip-path: inset(98% 0 0 0);
+                    clip-path: inset(98% 0 0 0);
+                }
+                75% {
+                    -webkit-clip-path: inset(0 0 0 98%);
+                    clip-path: inset(0 0 0 98%);
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <h1>hover 下 border 自动增长</h1>
+        <div class="border-radius"></div>
+        <h1>hover 下虚线框移动</h1>
+        <div class="border-dashed"></div>
+        <h1>彩虹渲染效果</h1>
+        <div class="border-rainbow"></div>
+        <h1>旋转线框</h1>
+        <div class="border-conic"></div>
+        <h1>线框环绕运转</h1>
+        <div class="border-flow"></div>
+        <!-- 参考文档地址 -->
+        <!-- https://www.cnblogs.com/coco1s/p/14291567.html -->
+    </body>
+</html>
