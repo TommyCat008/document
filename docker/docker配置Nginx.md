@@ -6,7 +6,7 @@
 
 `注意创建文件夹的时候，需要在conf文件夹创建一个nginx.conf以及在conf.d文件夹下创建default.conf文件，否则在docker启动容器的时候会将文件转成文件夹。`
 
-```shell
+```shell 公司电脑 path
 docker run  \
 --name nginx \
 -d -p 8080:80 \
@@ -14,6 +14,17 @@ docker run  \
 -v /Users/zhangyaqi04/zhangyaqi/docker/nginx/conf/nginx.conf:/etc/nginx/nginx.conf \
 -v /Users/zhangyaqi04/zhangyaqi/docker/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf  \
 -v /Users/zhangyaqi04/zhangyaqi/docker/nginx/logs:/var/log/nginx \
+nginx
+```
+
+```shell 自己电脑 path
+docker run  \
+--name nginx \
+-d -p 8080:80 \
+-v /Users/tangmimao/zhangyaqi/docker/nginx/html:/usr/share/nginx/html \
+-v /Users/tangmimao/zhangyaqi/docker/nginx/conf/nginx.conf:/etc/nginx/nginx.conf \
+-v /Users/tangmimao/zhangyaqi/docker/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf  \
+-v /Users/tangmimao/zhangyaqi/docker/nginx/logs:/var/log/nginx \
 nginx
 ```
 
