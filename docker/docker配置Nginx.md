@@ -15,6 +15,15 @@ docker run  \
 -v /Users/zhangyaqi04/zhangyaqi/docker/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf  \
 -v /Users/zhangyaqi04/zhangyaqi/docker/nginx/logs:/var/log/nginx \
 nginx
+
+
+docker run  \
+--name nginx \
+-d -p 8888:80 \
+-v /root/web-assets/html:/usr/share/nginx/html \
+-v /root/web-assets/conf/nginx.conf:/etc/nginx/nginx.conf \
+-v /root/web-assets/logs:/var/log/nginx \
+nginx
 ```
 
 ```shell 自己电脑 path
@@ -27,7 +36,6 @@ docker run  \
 -v /Users/tangmimao/zhangyaqi/docker/nginx/logs:/var/log/nginx \
 nginx
 ```
-
 
 ## nginx.conf 基本的配置内容
 
